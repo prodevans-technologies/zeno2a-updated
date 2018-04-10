@@ -41,9 +41,9 @@ public class InvoiceDAOImpl implements InvoiceDAO
 		{
 			HashMap<String, Object> hs = (HashMap<String, Object>) ob;
 			
-			//invoiceDetails.setAmount(Float.parseFloat(hs.get("pendingamount").toString()));
+			invoiceDetails.setAmount(Float.parseFloat(hs.get("pendingamount").toString()));
 			
-			invoiceDetails.setAmount(1.0f);
+			//invoiceDetails.setAmount(1.0f);
 			
 			invoiceDetails.setContent(hs.get("content").toString());
 			invoiceDetails.setInvoiceno(Integer.parseInt(hs.get("invoiceno").toString()));
