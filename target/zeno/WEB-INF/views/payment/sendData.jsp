@@ -426,16 +426,16 @@
             <input type="hidden" name="order_id" value="<%=order_id%>"/><!-- Order Id	: -->
             <input type="hidden" name="amount" id="amount" value="${invoiceDetails.getAmount() }"   />
             <input type="hidden" name="currency" value="INR"/><!-- Currency	: -->
-            <input type="hidden" name="redirect_url" value="https://www.mynuron.co.in/ccavResponseHandler"/><!-- Redirect URL	: -->
-            <input type="hidden" name="cancel_url" value="https://www.mynuron.co.in/ccvCancelResponse"/><!-- Cancel URL	: -->
+            <input type="hidden" name="redirect_url" value="http://myone8.oneeight.co.in/ccavResponseHandler"/><!-- Redirect URL	: -->
+            <input type="hidden" name="cancel_url" value="http://myone8.oneeight.co.in/ccvCancelResponse"/><!-- Cancel URL	: -->
             <input type="hidden" name="language" value="EN"/><!-- Language	: -->
             <input readonly="readonly" type="hidden" name="tid" id="tid" value=""/><!-- Transction ID -->
             <input type="hidden" name="merchant_id" value="127191"/><!-- Merchant ID -->
             <input type="hidden" name="order_id" value="<%=order_id%>"/><!-- order id -->
             <input type="hidden" name="amount" id="amount" value="${invoiceDetails.getAmount() }"/><!--Amount  -->
             <input type="hidden" name="currency" value="INR"/><!-- currency -->
-            <input type="hidden" name="redirect_url" value="https://www.mynuron.co.in/ccavResponseHandler"/><!-- Redirect URL -->
-            <input type="hidden" name="cancel_url" value="https://www.mynuron.co.in/ccvCancelResponse"/><!-- cancel url -->
+            <input type="hidden" name="redirect_url" value="http://myone8.oneeight.co.in/ccavResponseHandler"/><!-- Redirect URL -->
+            <input type="hidden" name="cancel_url" value="http://myone8.oneeight.co.in/ccvCancelResponse"/><!-- cancel url -->
             <input type="hidden" name="language" value="EN"/><!-- Language -->
 
             <input type="hidden" name="billing_name" value="${user_details.getFirst_name() }"/><!-- billing name -->
@@ -443,7 +443,7 @@
             <input type="hidden" name="billing_city" value="${user_details.getCityname() }"/><!-- billing city -->
             <input type="hidden" name="billing_state" value="${user_details.getStatename() }"/><!-- billing state -->
             <input type="hidden" name="billing_zip" value="${user_details.getPin() }"/><!-- billing zip -->
-            <input type="hidden" name="billing_country" value="${user_details.getCountryname() }"/><!-- billing country -->
+            <input type="hidden" name="billing_country" value="India"/><!-- billing country -->
             <input type="hidden" name="billing_tel" value="${user_details.getMobileno() }"/><!-- billing tel -->
 
             <input type="hidden" name="billing_email" value="${user_details.getEmail() }"/><!-- billing email -->
@@ -452,7 +452,7 @@
             <input type="hidden" name="billing_city" value="${user_details.getCityname() }"/><!-- billing city -->
             <input type="hidden" name="billing_state" value="${user_details.getStatename() }"/><!-- billing state -->
             <input type="hidden" name="billing_zip" value="${user_details.getPin() }"/><!-- billing zip -->
-            <input type="hidden" name="billing_country" value="${user_details.getCountryname() }"/><!-- billing country -->
+            <input type="hidden" name="billing_country" value="India"/><!-- billing country -->
             <input type="hidden" name="billing_tel" value="${user_details.getMobileno() }"/><!-- billing tel -->
 
             <input type="hidden" name="billing_email" value="${user_details.getEmail() }"/><!-- billing email -->
@@ -461,7 +461,7 @@
             <input type="hidden" name="delivery_city" value="${user_details.getCityname() }"/><!-- shiping city -->
             <input type="hidden" name="delivery_state" value="${user_details.getStatename() }"/><!-- shiping state -->
             <input type="hidden" name="delivery_zip" value="${user_details.getPin() }"/><!-- shiping zip -->
-            <input type="hidden" name="delivery_country" value="${user_details.getCountryname() }"/><!-- shiping country -->
+            <input type="hidden" name="delivery_country" value="India"/><!-- shiping country -->
             <input type="hidden" name="delivery_tel" value="${user_details.getMobileno() }"/><!-- shiping tel -->
 
             <input type="hidden" name="merchant_param1" value="additional Info."/><!-- merchant param1 -->
@@ -475,7 +475,7 @@
             <input type="hidden" name="delivery_city" value="${user_details.getCityname() }"/><!-- shiping city -->
             <input type="hidden" name="delivery_state" value="${user_details.getStatename() }"/><!-- shiping state -->
             <input type="hidden" name="delivery_zip" value="${user_details.getPin() }"/><!-- shiping zip -->
-            <input type="hidden" name="delivery_country" value="${user_details.getCountryname() }"/><!-- shiping country -->
+            <input type="hidden" name="delivery_country" value="India"/><!-- shiping country -->
             <input type="hidden" name="delivery_tel" value="${user_details.getMobileno() }"/><!-- shiping tel -->
 
             <input type="hidden" name="merchant_param1" value="additional Info."/><!-- merchant param1 -->

@@ -330,7 +330,7 @@
             <input type="hidden" name="billing_city" value="${user_details.getCityname() }"/><!-- billing city -->
             <input type="hidden" name="billing_state" value="${user_details.getStatename() }"/><!-- billing state -->
             <input type="hidden" name="billing_zip" value="${user_details.getPin() }"/><!-- billing zip -->
-            <input type="hidden" name="billing_country" value="${user_details.getCountryname() }"/><!-- billing country -->
+            <input type="hidden" name="billing_country" value="India"/><!-- billing country -->
             <input type="hidden" name="billing_tel" value="${user_details.getMobileno() }"/><!-- billing tel -->
 
             <input type="hidden" name="billing_email" value="${user_details.getEmail() }"/><!-- billing email -->
@@ -339,7 +339,7 @@
             <input type="hidden" name="billing_city" value="${user_details.getCityname() }"/><!-- billing city -->
             <input type="hidden" name="billing_state" value="${user_details.getStatename() }"/><!-- billing state -->
             <input type="hidden" name="billing_zip" value="${user_details.getPin() }"/><!-- billing zip -->
-            <input type="hidden" name="billing_country" value="${user_details.getCountryname() }"/><!-- billing country -->
+            <input type="hidden" name="billing_country" value="India"/><!-- billing country -->
             <input type="hidden" name="billing_tel" value="${user_details.getMobileno() }"/><!-- billing tel -->
 
             <input type="hidden" name="billing_email" value="${user_details.getEmail() }"/><!-- billing email -->
@@ -348,7 +348,7 @@
             <input type="hidden" name="delivery_city" value="${user_details.getCityname() }"/><!-- shiping city -->
             <input type="hidden" name="delivery_state" value="${user_details.getStatename() }"/><!-- shiping state -->
             <input type="hidden" name="delivery_zip" value="${user_details.getPin() }"/><!-- shiping zip -->
-            <input type="hidden" name="delivery_country" value="${user_details.getCountryname() }"/><!-- shiping country -->
+            <input type="hidden" name="delivery_country" value="India"/><!-- shiping country -->
             <input type="hidden" name="delivery_tel" value="${user_details.getMobileno() }"/><!-- shiping tel -->
 
             <input type="hidden" name="merchant_param1" value="additional Info."/><!-- merchant param1 -->
@@ -362,7 +362,7 @@
             <input type="hidden" name="delivery_city" value="${user_details.getCityname() }"/><!-- shiping city -->
             <input type="hidden" name="delivery_state" value="${user_details.getStatename() }"/><!-- shiping state -->
             <input type="hidden" name="delivery_zip" value="${user_details.getPin() }"/><!-- shiping zip -->
-            <input type="hidden" name="delivery_country" value="${user_details.getCountryname() }"/><!-- shiping country -->
+            <input type="hidden" name="delivery_country" value="India"/><!-- shiping country -->
             <input type="hidden" name="delivery_tel" value="${user_details.getMobileno() }"/><!-- shiping tel -->
 
             <input type="hidden" name="merchant_param1" value="additional Info."/><!-- merchant param1 -->

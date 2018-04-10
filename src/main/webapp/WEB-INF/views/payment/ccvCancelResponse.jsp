@@ -107,7 +107,7 @@
 <jsp:include page="../component/menubar.jsp"></jsp:include>	
 
 <%
-	String workingKey = "15DA308BD76A912EEF778F8200856069";		//32 Bit Alphanumeric Working Key should be entered here so that data can be decrypted.
+	String workingKey = "D12ABCBE2A86FC4942B6C71B089B5F32";		//32 Bit Alphanumeric Working Key should be entered here so that data can be decrypted.
 	String encResp= request.getParameter("encResp");
 	AesCryptUtil aesUtil=new AesCryptUtil(workingKey);
 	String decResp = aesUtil.decrypt(encResp);
