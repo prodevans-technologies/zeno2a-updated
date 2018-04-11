@@ -157,6 +157,18 @@
 			params.add(pd.getTrans_descr());
 			params.add(pd.getInvoiceNo());
 
+			
+			Vector<Object> params_receipt_to_customer = new Vector<>();
+			params_receipt_to_customer.add("Your payment is successfull..");
+			params_receipt_to_customer.add("Payment Receipt");
+			
+			//params_receipt_to_customer.add(responseFromCCAvenue.get("billing_email"));
+			
+			params_receipt_to_customer.add("vipin@prodevans.com");
+			
+			params_receipt_to_customer.add(1);
+			
+			
 			String server_url = "http://52.172.205.76/unifyv3/xmlRPC.do";
 			URL serverUrl = new URL(server_url);
 			// Create an object to represent our server.
@@ -170,6 +182,9 @@
 			Object o=(Object) server.execute("unify.addTransaction",params);
 			int Transaction_id=(int)o;
 			pd.setTransaction_id(Transaction_id);
+			
+			boolean sendmail_result =(Boolean)server.execute("unify.sendMail",params_receipt_to_customer);
+			
 			success=true;
 		}
 
