@@ -162,9 +162,8 @@
 			params_receipt_to_customer.add("Your payment is successfull..");
 			params_receipt_to_customer.add("Payment Receipt");
 			
-			//params_receipt_to_customer.add(responseFromCCAvenue.get("billing_email"));
+			params_receipt_to_customer.add(responseFromCCAvenue.get("billing_email"));
 			
-			params_receipt_to_customer.add("vipin@prodevans.com");
 			
 			params_receipt_to_customer.add(1);
 			
