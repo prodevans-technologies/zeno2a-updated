@@ -50,9 +50,9 @@ public class UserInfoDAOImpl implements UserLoginDAO {
 				userSessionDetails.setDomid(result.get("domid").toString());
 				userSessionDetails.setDomno(Integer.parseInt(result.get("domno").toString()));
 				
-				//userSessionDetails.setEmail(result.get("email").toString());
+				userSessionDetails.setEmail(result.get("email").toString());
 				
-				userSessionDetails.setEmail("vipin@prodevans.com");
+				
 				
 				userSessionDetails.setMobileno(result.get("mobileno").toString());
 				userSessionDetails.setPassword(result.get("password").toString());
