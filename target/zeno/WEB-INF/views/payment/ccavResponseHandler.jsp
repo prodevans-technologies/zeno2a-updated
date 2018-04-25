@@ -1,3 +1,5 @@
+<%@page import="org.json.JSONArray"%>
+<%@page import="org.json.JSONObject"%>
 <%@page import="com.prodevans.zeno.dao.impl.PaymentResponseDAOImpl"%>
 <%@page import="com.prodevans.zeno.dao.impl.PaymentDAOImpl"%>
 <%@page import="com.prodevans.zeno.pojo.PaymentDetails"%>
@@ -110,7 +112,9 @@
         
 <%
 		String workingKey = "D12ABCBE2A86FC4942B6C71B089B5F32";		//32 Bit Alphanumeric Working Key should be entered here so that data can be decrypted.
-		String encResp= request.getParameter("encResp");
+		String accessCode= "AVGK73EJ46AD68KGDA";		//Put in the Access Code in quotes provided by CCAVENUES.
+		
+		String encResp= request.getParameter("encResp");		
 		AesCryptUtil aesUtil=new AesCryptUtil(workingKey);
 		String decResp = aesUtil.decrypt(encResp);
 		StringTokenizer tokenizer = new StringTokenizer(decResp, "&");
@@ -140,6 +144,8 @@
 			responseFromCCAvenue.put(pname, pvalue);
 		}
 		
+	
+		
 		PaymentDetails pd=(PaymentDetails)session.getAttribute("data");
 		boolean success=false;
 		if(responseFromCCAvenue.get("order_status").equals("Success"))
@@ -157,6 +163,14 @@
 			params.add(pd.getTrans_descr());
 			params.add(pd.getInvoiceNo());
 
+			
+			Vector<Object> params_receipt_to_customer = new Vector<>();
+			params_receipt_to_customer.add("Your payment is successfull..");
+			params_receipt_to_customer.add("Payment Receipt");
+			params_receipt_to_customer.add(responseFromCCAvenue.get("billing_email"));
+			params_receipt_to_customer.add(1);
+			
+			
 			String server_url = "http://52.172.205.76/unifyv3/xmlRPC.do";
 			URL serverUrl = new URL(server_url);
 			// Create an object to represent our server.
@@ -170,7 +184,64 @@
 			Object o=(Object) server.execute("unify.addTransaction",params);
 			int Transaction_id=(int)o;
 			pd.setTransaction_id(Transaction_id);
+			
+			boolean sendmail_result =(Boolean)server.execute("unify.sendMail",params_receipt_to_customer);
+			
 			success=true;
+			
+			//Split Payment code starts here....
+			
+			double amount = Double.parseDouble(responseFromCCAvenue.get("amount"));
+			double merchant_amount = amount * 0.7;
+			double sub_user_amount = amount * 0.3;
+			
+			JSONObject splitPaymentObject = new JSONObject();
+			
+			JSONObject subAccId_1 = new JSONObject();
+			//subAccId_1.put("splitAmount", "913020045348957");
+			//subAccId_1.put("subAccId", merchant_amount+"");
+			
+			JSONObject subAccId_2 = new JSONObject();
+			subAccId_2.put("splitAmount", sub_user_amount+"");
+			subAccId_2.put("subAccId", "915020053620294");
+			
+			JSONArray split_data_list = new JSONArray();
+			//split_data_list.put(subAccId_1);
+			split_data_list.put(subAccId_2);
+			
+			
+			splitPaymentObject.put("reference_no", responseFromCCAvenue.get("tracking_id") );
+			splitPaymentObject.put("split_tdr_charge_type", "M");
+			splitPaymentObject.put("merComm", "0");
+			splitPaymentObject.put("split_data_list", split_data_list);
+			
+			
+			String encRequest = aesUtil.encrypt(splitPaymentObject.toString());
+			
+			System.out.println("Without encryption : "+splitPaymentObject);
+			System.out.println("With encryption : "+encRequest);
+			
+			%>
+
+			<form id="nonseamless" method="post" name="redirect" action="https://login.ccavenue.com/apis/servlet/DoWebTrans"/> 
+				<input type="hidden" id="enc_request" name="enc_request" value="<%= encRequest %>">
+				<input type="hidden" name="access_code" id="access_code" value="AVGK73EJ46AD68KGDA">
+				<input type="hidden" name="request_type" id="request_type" value="JSON">
+				<input type="hidden" name="response_type" id="response_type" value="JSON">
+				<input type="hidden" name="command" id="command" value="createSplitPayout"/><!-- Command	: -->
+				<input type="hidden" name="version" id="version" value="1.2"/><!-- Command	: -->
+				
+				<script language='javascript'>document.redirect.submit();</script>
+			</form>
+			
+			<% 
+			
+			String split_payout_Resp= request.getParameter("enc_response");		
+			AesCryptUtil aesUtil_split_payout=new AesCryptUtil(workingKey);
+			String decResp_split_payout = aesUtil.decrypt(split_payout_Resp);
+			
+			System.out.println("Split Payout Response : "+decResp_split_payout);
+			success = true;
 		}
 
 
