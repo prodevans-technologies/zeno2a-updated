@@ -225,7 +225,7 @@
 
 			<form id="nonseamless" method="post" name="redirect" action="https://login.ccavenue.com/apis/servlet/DoWebTrans"/> 
 				<input type="hidden" id="enc_request" name="enc_request" value="<%= encRequest %>">
-				<input type="hidden" name="access_code" id="access_code" value="AVGK73EJ46AD68KGDA">
+				<input type="hidden" name="access_code" id="access_code" value="AVEX77FD69CC28XECC">
 				<input type="hidden" name="request_type" id="request_type" value="JSON">
 				<input type="hidden" name="response_type" id="response_type" value="JSON">
 				<input type="hidden" name="command" id="command" value="createSplitPayout"/><!-- Command	: -->
