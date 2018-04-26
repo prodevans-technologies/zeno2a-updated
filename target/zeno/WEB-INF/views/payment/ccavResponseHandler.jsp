@@ -225,7 +225,7 @@
 
 			<form id="nonseamless" method="post" name="redirect" action="https://login.ccavenue.com/apis/servlet/DoWebTrans"/> 
 				<input type="hidden" id="enc_request" name="enc_request" value="<%= encRequest %>">
-				<input type="hidden" name="access_code" id="access_code" value="AVUJ77FD51BJ07JUJB">
+				<input type="hidden" name="access_code" id="access_code" value="AVEX77FD69CC27XECC">
 				<input type="hidden" name="request_type" id="request_type" value="JSON">
 				<input type="hidden" name="response_type" id="response_type" value="JSON">
 				<input type="hidden" name="command" id="command" value="createSplitPayout"/><!-- Command	: -->
@@ -237,7 +237,7 @@
 			<% 
 			
 			String split_payout_Resp= request.getParameter("enc_response");		
-			AesCryptUtil aesUtil_split_payout=new AesCryptUtil(workingKey);
+			AesCryptUtil aesUtil_split_payout=new AesCryptUtil("6751513E41903CE3BF783FD4FE73B1FC");//working key
 			String decResp_split_payout = aesUtil.decrypt(split_payout_Resp);
 			
 			System.out.println("Split Payout Response : "+decResp_split_payout);
