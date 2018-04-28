@@ -3,6 +3,7 @@
 <%@page import="com.prodevans.zeno.dao.impl.PaymentResponseDAOImpl"%>
 <%@page import="com.prodevans.zeno.dao.impl.PaymentDAOImpl"%>
 <%@page import="com.prodevans.zeno.pojo.PaymentDetails"%>
+<%@page import="com.prodevans.zeno.config.CCAvenueConfig"%>
 <%@page import="java.net.URLDecoder"%>
 <%@page import="java.net.URL"%>
 
@@ -111,11 +112,11 @@
 <jsp:include page="../component/menubar.jsp"></jsp:include>
         
 <%
-		String workingKey = "D12ABCBE2A86FC4942B6C71B089B5F32";		//32 Bit Alphanumeric Working Key should be entered here so that data can be decrypted.
-		String accessCode= "AVGK73EJ46AD68KGDA";		//Put in the Access Code in quotes provided by CCAVENUES.
+		String workingKey_DNS = CCAvenueConfig.working_code_DNS;		//32 Bit Alphanumeric Working Key should be entered here so that data can be decrypted.
+		
 		
 		String encResp= request.getParameter("encResp");		
-		AesCryptUtil aesUtil=new AesCryptUtil(workingKey);
+		AesCryptUtil aesUtil=new AesCryptUtil(workingKey_DNS);
 		String decResp = aesUtil.decrypt(encResp);
 		StringTokenizer tokenizer = new StringTokenizer(decResp, "&");
 		Hashtable hs=new Hashtable();
@@ -163,9 +164,10 @@
 			params.add(pd.getTrans_descr());
 			params.add(pd.getInvoiceNo());
 
+			String receipt_content = "Dear Customer,\nGreeting from Nuron!\nWe wish to confirm receipt of Rs. "+responseFromCCAvenue.get("amount")+" via Online Payment towards Nuron A/C No. ROL0000011 \n In case of any queries, feel free to contact us at +91 9019602602\nYou may also use the https://mynuron.co.in/login portal \n Regards,\n Nuron";
 			
 			Vector<Object> params_receipt_to_customer = new Vector<>();
-			params_receipt_to_customer.add("Your payment is successfull..");
+			params_receipt_to_customer.add(receipt_content);
 			params_receipt_to_customer.add("Payment Receipt");
 			params_receipt_to_customer.add(responseFromCCAvenue.get("billing_email"));
 			params_receipt_to_customer.add(1);
@@ -189,6 +191,8 @@
 			
 			success=true;
 			
+			
+			
 			//Split Payment code starts here....
 			
 			double amount = Double.parseDouble(responseFromCCAvenue.get("amount"));
@@ -198,20 +202,20 @@
 			JSONObject splitPaymentObject = new JSONObject();
 			
 			JSONObject subAccId_1 = new JSONObject();
-			//subAccId_1.put("splitAmount", "913020045348957");
-			//subAccId_1.put("subAccId", merchant_amount+"");
+			subAccId_1.put("splitAmount", "913020045348957");
+			subAccId_1.put("subAccId", merchant_amount+"");
 			
 			JSONObject subAccId_2 = new JSONObject();
 			subAccId_2.put("splitAmount", sub_user_amount+"");
 			subAccId_2.put("subAccId", "915020053620294");
 			
 			JSONArray split_data_list = new JSONArray();
-			//split_data_list.put(subAccId_1);
+			split_data_list.put(subAccId_1);
 			split_data_list.put(subAccId_2);
 			
 			
 			splitPaymentObject.put("reference_no", responseFromCCAvenue.get("tracking_id") );
-			splitPaymentObject.put("split_tdr_charge_type", "M");
+			splitPaymentObject.put("split_tdr_charge_type", "S");
 			splitPaymentObject.put("merComm", "0");
 			splitPaymentObject.put("split_data_list", split_data_list);
 			
@@ -221,11 +225,14 @@
 			System.out.println("Without encryption : "+splitPaymentObject);
 			System.out.println("With encryption : "+encRequest);
 			
+			String workingKey_IP = CCAvenueConfig.working_code_IP;
+			String accessCode_IP= CCAvenueConfig.access_code_IP;		//Put in the Access Code in quotes provided by CCAVENUES.
+			
 			%>
 
 			<form id="nonseamless" method="post" name="redirect" action="https://login.ccavenue.com/apis/servlet/DoWebTrans"/> 
 				<input type="hidden" id="enc_request" name="enc_request" value="<%= encRequest %>">
-				<input type="hidden" name="access_code" id="access_code" value="AVEX77FD69CC27XECC">
+				<input type="hidden" name="access_code" id="access_code" value="<%= accessCode_IP %>">
 				<input type="hidden" name="request_type" id="request_type" value="JSON">
 				<input type="hidden" name="response_type" id="response_type" value="JSON">
 				<input type="hidden" name="command" id="command" value="createSplitPayout"/><!-- Command	: -->
@@ -236,91 +243,40 @@
 			
 			<% 
 			
-			String split_payout_Resp= request.getParameter("enc_response");		
-			AesCryptUtil aesUtil_split_payout=new AesCryptUtil("6751513E41903CE3BF783FD4FE73B1FC");//working key
-			String decResp_split_payout = aesUtil.decrypt(split_payout_Resp);
+			pd.setSplitPayoutResult(true);
+			pd.setStatus_message(responseFromCCAvenue.get("status_message"));
 			
-			System.out.println("Split Payout Response : "+decResp_split_payout);
+			session.setAttribute("pd", pd);
+			response.sendRedirect(CCAvenueConfig.Host+"/spliPayoutResponse");
+			
+			/* 
+			String split_payout_Resp= request.getParameter("enc_resp");		
+			AesCryptUtil aesUtil_split_payout=new AesCryptUtil(workingKey_IP);//working key
+			String decResp_split_payout = aesUtil_split_payout.decrypt(split_payout_Resp);
+			
+			//System.out.println("Split Payout Response : "+decResp_split_payout);
+			
+			String split_payout_status =request.getParameter("status");
+			
+			System.out.println("split_payout_status : "+split_payout_status);
+			
+			System.out.println("split_payout_Resp : "+split_payout_Resp);
+			
 			success = true;
+			
+			System.out.println("success : "+success); */
+		}
+		else
+		{
+			pd.setSplitPayoutResult(false);
+			pd.setStatus_message(responseFromCCAvenue.get("status_message"));
+			
+			session.setAttribute("pd", pd);
+			response.sendRedirect(CCAvenueConfig.Host+"/spliPayoutResponse");
+
 		}
 
-
-if(success)
-{
-%>
-<div class="col-md-4 col-sm-12  firstRow pt-20">
-	<h1 style="color: white; ">Bill payment</h1>
-</div>
-
-<div class="col-md-8 col-sm-12 " style="background-color: #ecf0f1;min-height: 116px;">
-	<div class="col-md-12 col-xs-11 pt-20M ">
-		<div class="col-xs-10">
-			<h1 style="color: black;" class="currentBillFontforiPhone5">
-	        Your transaction was successful</h1>
-	    </div>
-	    <div class="col-xs-2"> 
-	        <img class="paymentImageSize pt-20I" alt="Check Image" src="corporate/img/check.png">
-		</div>	
-	</div>
-</div>
-
-<div class="container ">
-        <div class="col-md-4">
-        </div>
-        <div class="col-md-8 col-xs-12">
-            <div class="mainBlock3" style="background-color: #2980b9;">
-                <h3 class="pb-40">Payment Summary</h3>
-                <h2 class="pb-40">Your payment of &#8377;. <%=responseFromCCAvenue.get("amount") %>/- was successful</h2>
-                <h5>TRANSACTION ID</h5>
-                <h3><%=pd.getTransaction_id() %></h3>
-                
-                <form action="viewReceipt" method="post">
-	            	<input type="hidden" value="<%=pd.getTransaction_id() %>" name="trans_id">
-	            	<button class="btn billButton" type="submit">VIEW RECEIPT</button>
-	            </form>
-            </div>
-        </div>
-</div>
-	
-
-<%
-}
-else
-{
-%>
-<div class="col-md-4 col-sm-12  firstRow pt-20">
-	<h1 style="color: white; ">Bill payment</h1>
-</div>
-
-<div class="col-md-8 col-sm-12 " style="background-color: #ecf0f1;min-height: 116px;">
-	<div class="col-md-12 col-xs-11 pt-20M ">
-		<div class="col-xs-10">
-			<h1 style="color: black;" class="currentBillFontforiPhone5">
-	        Your transaction was unsuccessful</h1>
-	    </div>
-	    <div class="col-xs-2"> 
-	        <img class="paymentImageSize pt-20I" alt="Check Image" src="corporate/img/cross1.png">
-		</div>	
-	</div>
-</div>
-
-<div class="container ">
-        <div class="col-md-4">
-        </div>
-        <div class="col-md-8 col-xs-12">
-            <div class="mainBlock3" style="background-color: #2980b9;">
-                <h3 class="pb-40">Payment Summary</h3>
-                <h2 class="pb-40">Your payment of &#8377;. <%=responseFromCCAvenue.get("amount") %>/- was unsuccessful</h2>
-                <h5>REASON</h5>
-                <h3><%=responseFromCCAvenue.get("status_message")%></h3>
-            </div>
-        </div>
-</div>
-	
-<%
-}
-%>
-	
+		%>
 	
         <jsp:include page="../component/pop-up.jsp"></jsp:include>
             

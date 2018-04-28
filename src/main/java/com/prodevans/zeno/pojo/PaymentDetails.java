@@ -15,6 +15,8 @@ public class PaymentDetails
 	private String trans_descr;
 	private int invoiceNo;
 	private int Transaction_id;
+	private boolean splitPayoutResult;
+	private String status_message;
 	
 	
 	public int getInvoiceNo() {
@@ -29,7 +31,7 @@ public class PaymentDetails
 		// TODO Auto-generated constructor stub
 	}
 	public PaymentDetails(int actno, double trans_amount, String trans_type, Date trans_date, String currency,
-			int instrumentid, String instrument_detail, String trans_descr, int invoiceNo) {
+			int instrumentid, String instrument_detail, String trans_descr, int invoiceNo, boolean splitPayoutResult, String status_message) {
 		super();
 		this.actno = actno;
 		this.trans_amount = trans_amount;
@@ -40,7 +42,20 @@ public class PaymentDetails
 		this.instrument_detail = instrument_detail;
 		this.trans_descr = trans_descr;
 		this.invoiceNo=invoiceNo;
-		
+		this.splitPayoutResult = splitPayoutResult;
+		this.status_message = status_message;
+	}
+	public String getStatus_message() {
+		return status_message;
+	}
+	public void setStatus_message(String status_message) {
+		this.status_message = status_message;
+	}
+	public boolean isSplitPayoutResult() {
+		return splitPayoutResult;
+	}
+	public void setSplitPayoutResult(boolean splitPayoutResult) {
+		this.splitPayoutResult = splitPayoutResult;
 	}
 	public int getActno() {
 		return actno;

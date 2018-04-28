@@ -1,8 +1,10 @@
 package com.prodevans.zeno.controller;
 
 import java.text.ParseException;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.xmlrpc.XmlRpcException;
@@ -179,6 +181,20 @@ public class PaymentController {
             throws XmlRpcException {
         return "payment/ccavResponseHandler";
     }
+    
+    
+    @RequestMapping(value = "/spliPayoutResponse", method = RequestMethod.GET)
+    public String spliPayoutResponse(ModelMap model, HttpSession session, HttpServletRequest request) throws XmlRpcException 
+    {
+    	
+    	PaymentDetails pd=(PaymentDetails)session.getAttribute("pd");
+    	
+    	model.addAttribute("pd", pd);
+    	
+        return "payment/spliPayoutResponse";
+    }
+    
+    
 
     @RequestMapping(value = "/viewReceipt", method = RequestMethod.POST)
     public String viewReceipt(ModelMap model, HttpSession session, HttpServletRequest request) throws XmlRpcException, ParseException {

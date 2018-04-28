@@ -3,6 +3,7 @@
 <%@page import="com.prodevans.zeno.dao.impl.PaymentResponseDAOImpl"%>
 <%@page import="com.prodevans.zeno.dao.impl.PaymentDAOImpl"%>
 <%@page import="com.prodevans.zeno.pojo.PaymentDetails"%>
+<%@page import="com.prodevans.zeno.config.CCAvenueConfig"%>
 <%@page import="java.net.URLDecoder"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -109,9 +110,10 @@
 <jsp:include page="../component/menubar.jsp"></jsp:include>	
 
 <%
-	String workingKey = "D12ABCBE2A86FC4942B6C71B089B5F32";		//32 Bit Alphanumeric Working Key should be entered here so that data can be decrypted.
+	String workingKey_DNS = CCAvenueConfig.working_code_DNS;		//32 Bit Alphanumeric Working Key should be entered here so that data can be decrypted.
+	
 	String encResp= request.getParameter("encResp");
-	AesCryptUtil aesUtil=new AesCryptUtil(workingKey);
+	AesCryptUtil aesUtil=new AesCryptUtil(workingKey_DNS);
 	String decResp = aesUtil.decrypt(encResp);
 	StringTokenizer tokenizer = new StringTokenizer(decResp, "&");
 	Hashtable hs=new Hashtable();
@@ -142,33 +144,7 @@
 	}
 	
 	
-	/*
-	JSONObject splitPaymentObject = new JSONObject();
 	
-	JSONObject subAccId_1 = new JSONObject();
-	subAccId_1.put("splitAmount", "5");
-	subAccId_1.put("subAccId", "5");
-	
-	JSONObject subAccId_2 = new JSONObject();
-	subAccId_2.put("splitAmount", "5342");
-	subAccId_2.put("subAccId", "5234324");
-	
-	JSONArray split_data_list = new JSONArray();
-	split_data_list.put(subAccId_1);
-	split_data_list.put(subAccId_2);
-	
-	
-	splitPaymentObject.put("reference_no", responseFromCCAvenue.get("tracking_id") );
-	splitPaymentObject.put("split_tdr_charge_type", "M");
-	splitPaymentObject.put("merComm", "2.0");
-	splitPaymentObject.put("split_data_list", split_data_list);
-	
-	
-	String encRequest = aesUtil.encrypt(splitPaymentObject.toString());
-	
-	System.out.println("splitPaymentObject : "+splitPaymentObject);
-		
-	*/
 %>
 <div class="col-md-4 col-sm-12  firstRow pt-20">
 	<h1 style="color: white; ">Bill payment</h1>

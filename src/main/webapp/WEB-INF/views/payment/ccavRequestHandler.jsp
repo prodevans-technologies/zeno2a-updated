@@ -1,4 +1,6 @@
 <%@page import="com.prodevans.zeno.pojo.PaymentDetails"%>
+<%@page import="com.prodevans.zeno.config.CCAvenueConfig"%>
+
 <%@page import="java.net.URLEncoder"%>
 <%
 /*
@@ -44,8 +46,10 @@
 	
 	
 	
-	 String accessCode= "AVGK73EJ46AD68KGDA";		//Put in the Access Code in quotes provided by CCAVENUES.
-	 String workingKey = "D12ABCBE2A86FC4942B6C71B089B5F32";    //Put in the 32 Bit Working Key provided by CCAVENUES.  
+	 String accessCode_DNS= CCAvenueConfig.access_code_DNS;		//Put in the Access Code in quotes provided by CCAVENUES.
+	 String workingKey_DNS = CCAvenueConfig.working_code_DNS;    //Put in the 32 Bit Working Key provided by CCAVENUES. 
+	 
+	 
 	 Enumeration enumeration=request.getParameterNames();
 	 String ccaRequest="", pname="", pvalue="";
 	 while(enumeration.hasMoreElements()) {
@@ -53,13 +57,13 @@
 	      pvalue = request.getParameter(pname);
 	      ccaRequest = ccaRequest + pname + "=" + URLEncoder.encode(pvalue,"UTF-8") + "&";
 	 }
-	 AesCryptUtil aesUtil=new AesCryptUtil(workingKey);
+	 AesCryptUtil aesUtil=new AesCryptUtil(workingKey_DNS);
 	 String encRequest = aesUtil.encrypt(ccaRequest);
 	%>
 	
 	<form id="nonseamless" method="post" name="redirect" action="https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction"/> 
 		<input type="hidden" id="encRequest" name="encRequest" value="<%= encRequest %>">
-		<input type="hidden" name="access_code" id="access_code" value="<%= accessCode %>">
+		<input type="hidden" name="access_code" id="access_code" value="<%= accessCode_DNS %>">
 		
 		
 		

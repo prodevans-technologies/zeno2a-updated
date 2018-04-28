@@ -1,3 +1,4 @@
+<%@page import="com.prodevans.zeno.config.CCAvenueConfig"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.time.LocalDateTime"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
@@ -311,9 +312,21 @@
 			String date="";
 			String hr="";
 			String minute="";
+			
+			String merchant_id = "";
+			String redirect_url = "";
+			String cancel_url = "";
+			
 		%>
 		
 		<%
+		
+		merchant_id = CCAvenueConfig.merchant_id;
+		redirect_url = CCAvenueConfig.redirect_url;
+		cancel_url = CCAvenueConfig.cancel_url;
+		
+		
+		
 		LocalDateTime localDate = LocalDateTime.now();
 		year=""+localDate.getYear();
 		year=year.substring(2,4);
@@ -422,15 +435,15 @@
 
 
             <input readonly="readonly" type="hidden" name="tid" id="tid" value=""/><!-- Transaction ID -->
-            <input type="hidden" name="merchant_id" value="127191"/><!-- Merchant Id	: -->
+            <input type="hidden" name="merchant_id" value="<%=merchant_id  %>"/><!-- Merchant Id	: -->
             <input type="hidden" name="order_id" value="<%=order_id%>"/><!-- Order Id	: -->
             <input type="hidden" name="amount" id="amount" value="${invoiceDetails.getAmount() }"   />
             <input type="hidden" name="currency" value="INR"/><!-- Currency	: -->
             
             <!--<input type="hidden" name="redirect_url" value="http://myone8.oneeight.co.in/ccavResponseHandler"/><!-- Redirect URL	: -->
             
-            <input type="hidden" name="redirect_url" value="http://myone8.oneeight.co.in/zeno/ccavResponseHandler"/><!-- Redirect URL	: -->
-            <input type="hidden" name="cancel_url" value="http://myone8.oneeight.co.in/zeno/ccvCancelResponse"/><!-- Cancel URL	: -->
+            <input type="hidden" name="redirect_url" value="<%=redirect_url  %>"/><!-- Redirect URL	: -->
+            <input type="hidden" name="cancel_url" value="<%=cancel_url  %>"/><!-- Cancel URL	: -->
 
             <input type="hidden" name="language" value="EN"/><!-- Language	: -->
             <input readonly="readonly" type="hidden" name="tid" id="tid" value=""/><!-- Transction ID -->
@@ -438,8 +451,8 @@
             <input type="hidden" name="order_id" value="<%=order_id%>"/><!-- order id -->
             <input type="hidden" name="amount" id="amount" value="${invoiceDetails.getAmount() }"/><!--Amount  -->
             <input type="hidden" name="currency" value="INR"/><!-- currency -->
-            <input type="hidden" name="redirect_url" value="http://myone8.oneeight.co.in/zeno/ccavResponseHandler"/><!-- Redirect URL -->
-            <input type="hidden" name="cancel_url" value="http://myone8.oneeight.co.in/zeno/ccvCancelResponse"/><!-- cancel url -->
+            <input type="hidden" name="redirect_url" value="<%=redirect_url  %>"/><!-- Redirect URL -->
+            <input type="hidden" name="cancel_url" value="<%=cancel_url  %>"/><!-- cancel url -->
             <input type="hidden" name="language" value="EN"/><!-- Language -->
 
             <input type="hidden" name="billing_name" value="${user_details.getFirst_name() }"/><!-- billing name -->

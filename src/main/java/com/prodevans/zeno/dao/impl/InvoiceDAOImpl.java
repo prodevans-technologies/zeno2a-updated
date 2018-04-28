@@ -43,7 +43,7 @@ public class InvoiceDAOImpl implements InvoiceDAO
 			
 			//invoiceDetails.setAmount(Float.parseFloat(hs.get("pendingamount").toString()));
 			
-			invoiceDetails.setAmount(2.0f);
+			invoiceDetails.setAmount(1.0f);
 			
 			invoiceDetails.setContent(hs.get("content").toString());
 			invoiceDetails.setInvoiceno(Integer.parseInt(hs.get("invoiceno").toString()));
