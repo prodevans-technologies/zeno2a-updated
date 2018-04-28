@@ -137,6 +137,8 @@
 		PaymentResponseDAOImpl prdi=new PaymentResponseDAOImpl();
 	    HashMap<String, String> responseFromCCAvenue= new HashMap<>();
 		
+	    
+	    //Getting Transaction details from CC Avenue
 	    Enumeration enumeration = hs.keys();
 		while(enumeration.hasMoreElements())
 		{
@@ -151,47 +153,6 @@
 		boolean success=false;
 		if(responseFromCCAvenue.get("order_status").equals("Success"))
 		{
-			
-			Vector<Object> params = new Vector<>();
-			
-			params.add(pd.getActno());
-			params.add(pd.getTrans_amount());
-			params.add(pd.getTrans_type());
-			params.add(new Date());
-			params.add(pd.getCurrency());
-			params.add(pd.getInstrumentid());
-			params.add(pd.getInstrument_detail());
-			params.add(pd.getTrans_descr());
-			params.add(pd.getInvoiceNo());
-
-			String receipt_content = "Dear Customer,\nGreeting from Nuron!\nWe wish to confirm receipt of Rs. "+responseFromCCAvenue.get("amount")+" via Online Payment towards Nuron A/C No. ROL0000011 \n In case of any queries, feel free to contact us at +91 9019602602\nYou may also use the https://mynuron.co.in/login portal \n Regards,\n Nuron";
-			
-			Vector<Object> params_receipt_to_customer = new Vector<>();
-			params_receipt_to_customer.add(receipt_content);
-			params_receipt_to_customer.add("Payment Receipt");
-			params_receipt_to_customer.add(responseFromCCAvenue.get("billing_email"));
-			params_receipt_to_customer.add(1);
-			
-			
-			String server_url = "http://52.172.205.76/unifyv3/xmlRPC.do";
-			URL serverUrl = new URL(server_url);
-			// Create an object to represent our server.
-			XmlRpcClient server = new XmlRpcClient();
-			XmlRpcClientConfigImpl conf = new XmlRpcClientConfigImpl();
-			conf.setBasicUserName("oneeight");
-			conf.setBasicPassword("!oneight@#");
-			conf.setServerURL(serverUrl);
-			
-			server.setConfig(conf);
-			Object o=(Object) server.execute("unify.addTransaction",params);
-			int Transaction_id=(int)o;
-			pd.setTransaction_id(Transaction_id);
-			
-			boolean sendmail_result =(Boolean)server.execute("unify.sendMail",params_receipt_to_customer);
-			
-			success=true;
-			
-			
 			
 			//Split Payment code starts here....
 			
@@ -243,28 +204,70 @@
 			
 			<% 
 			
+			/* //Split payout response parameter should decrypt here..
+			String split_payout_Resp= request.getParameter("enc_resp");		
+			AesCryptUtil aesUtil_split_payout=new AesCryptUtil(workingKey_IP);//working key
+			String decResp_split_payout = aesUtil_split_payout.decrypt(split_payout_Resp);
+			//System.out.println("Split Payout Response : "+decResp_split_payout);
+			String split_payout_status =request.getParameter("status");
+			System.out.println("split_payout_status : "+split_payout_status);
+			System.out.println("split_payout_Resp : "+split_payout_Resp);
+			success = true;
+			System.out.println("success : "+success); */
+			
+			
+			
+			//Preparing Server object 
+			String server_url = "http://52.172.205.76/unifyv3/xmlRPC.do";
+			URL serverUrl = new URL(server_url);
+			// Create an object to represent our server.
+			XmlRpcClient server = new XmlRpcClient();
+			XmlRpcClientConfigImpl conf = new XmlRpcClientConfigImpl();
+			conf.setBasicUserName("oneeight");
+			conf.setBasicPassword("!oneight@#");
+			conf.setServerURL(serverUrl);
+			
+			
+			//Adding transaction details into Inventum
+			Vector<Object> params = new Vector<>();
+			
+			params.add(pd.getActno());
+			params.add(pd.getTrans_amount());
+			params.add(pd.getTrans_type());
+			params.add(new Date());
+			params.add(pd.getCurrency());
+			params.add(pd.getInstrumentid());
+			params.add(pd.getInstrument_detail());
+			params.add(pd.getTrans_descr());
+			params.add(pd.getInvoiceNo());
+			
+			server.setConfig(conf);
+			Object o=(Object) server.execute("unify.addTransaction",params);
+			int Transaction_id=(int)o;
+			pd.setTransaction_id(Transaction_id);
+			
+			
+			// Sending a mail from OE to customer
+			String receipt_content = "Dear Customer,\nGreeting from Nuron!\nWe wish to confirm receipt of Rs. "+responseFromCCAvenue.get("amount")+" via Online Payment towards Nuron A/C No. ROL0000011 \n In case of any queries, feel free to contact us at +91 9019602602\nYou may also use the https://mynuron.co.in/login portal \n Regards,\n Nuron";
+			
+			Vector<Object> params_receipt_to_customer = new Vector<>();
+			params_receipt_to_customer.add(receipt_content);
+			params_receipt_to_customer.add("Payment Receipt");
+			params_receipt_to_customer.add(responseFromCCAvenue.get("billing_email"));
+			params_receipt_to_customer.add(1);
+			
+			boolean sendmail_result =(Boolean)server.execute("unify.sendMail",params_receipt_to_customer);
+			
+			success=true;
+			
+			
+			//Redirecting user for showing transaction status.
 			pd.setSplitPayoutResult(true);
 			pd.setStatus_message(responseFromCCAvenue.get("status_message"));
 			
 			session.setAttribute("pd", pd);
 			response.sendRedirect(CCAvenueConfig.Host+"/spliPayoutResponse");
 			
-			/* 
-			String split_payout_Resp= request.getParameter("enc_resp");		
-			AesCryptUtil aesUtil_split_payout=new AesCryptUtil(workingKey_IP);//working key
-			String decResp_split_payout = aesUtil_split_payout.decrypt(split_payout_Resp);
-			
-			//System.out.println("Split Payout Response : "+decResp_split_payout);
-			
-			String split_payout_status =request.getParameter("status");
-			
-			System.out.println("split_payout_status : "+split_payout_status);
-			
-			System.out.println("split_payout_Resp : "+split_payout_Resp);
-			
-			success = true;
-			
-			System.out.println("success : "+success); */
 		}
 		else
 		{

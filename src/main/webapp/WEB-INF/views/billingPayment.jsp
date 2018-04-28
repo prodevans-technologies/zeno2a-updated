@@ -205,7 +205,7 @@
                         <h4>1. ${SubscriptionDetails.getFUPLimit() } GB Data</h4>
                         <h4>2. 512 Kbps Post FUP Speed Data</h4>
                         <div align="right" style="color: #2980b9; padding-right:28px;" >
-                        <a href="viewBill " class="btn billButton1" "target="_blank" > VIEW BILL </a> </div>
+                        <a href="viewBill " class="btn billButton1" target="_blank" > VIEW BILL </a> </div>
                         
                         
                         

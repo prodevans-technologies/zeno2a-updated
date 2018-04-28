@@ -12,7 +12,7 @@ public interface CCAvenueConfig
 	String working_code_IP = "6751513E41903CE3BF783FD4FE73B1FC";
 	
 	
-	String Host = "http://myone8.oneeight.co.in/zeno/";
+	String Host = "http://myone8.oneeight.co.in/zeno";
 	
 	String redirect_url = Host+"/ccavResponseHandler";
 	

@@ -134,7 +134,7 @@
                 <h5>TRANSACTION ID</h5>
                 <h3><c:out value="${pd.getTransaction_id() }"></c:out></h3>
                 
-                <form action="viewReceipt" method="post">
+                <form action="viewReceipt" method="post" target="_blank">
 	            	<input type="hidden" value="<c:out value="${pd.getTransaction_id() }"></c:out>" name="trans_id">
 	            	<button class="btn billButton" type="submit">VIEW RECEIPT</button>
 	            </form>
